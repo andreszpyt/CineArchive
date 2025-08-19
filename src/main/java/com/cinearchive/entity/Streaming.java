@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "streaming")
-public class streaming {
+public class Streaming {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
