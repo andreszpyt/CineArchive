@@ -1,8 +1,9 @@
 package com.cinearchive.repository;
 
+import com.cinearchive.entity.Streaming;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StreamingRespository extends JpaRepository<StreamingRespository, Long> {
+public interface StreamingRespository extends JpaRepository<Streaming, Long> {
 }
