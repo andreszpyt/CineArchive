@@ -36,7 +36,7 @@ public class MovieController {
     @PostMapping
     public ResponseEntity<MovieResponse> addMovie(@RequestBody MovieRequest request) {
         Movie movie = movieService.save(MovieMapper.toMovie(request));
-        return ResponseEntity.status(HttpStatus.CREATED).body(MovieMapper.toResponse(movieService.save(movie)));
+        return ResponseEntity.status(HttpStatus.CREATED).body(MovieMapper.toResponse(movie));
     }
 
     @PutMapping("/{id}")
