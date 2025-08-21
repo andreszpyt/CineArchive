@@ -47,6 +47,7 @@ public class StreamingController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteStreaming(@PathVariable Long id) {
+        streamingService.deleteById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
