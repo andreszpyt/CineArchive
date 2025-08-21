@@ -6,10 +6,11 @@ import com.cinearchive.entity.Movie;
 import com.cinearchive.mapper.MovieMapper;
 import com.cinearchive.service.MovieService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/movie")
@@ -18,37 +19,36 @@ public class MovieController {
     private final MovieService movieService;
 
     @GetMapping
-    public List<MovieResponse> getAllMovies() {
+    public ResponseEntity<List<MovieResponse>> getAllMovies() {
         List<MovieResponse> movieResponses = movieService.findAll().stream()
                 .map(MovieMapper::toResponse)
                 .toList();
-        return movieResponses;
+        return ResponseEntity.ok(movieResponses);
     }
 
     @GetMapping("/{id}")
-    public Optional<MovieResponse> getMovieById(@PathVariable Long id) {
-            Optional<Movie> movie = movieService.findById(id);
-            if(movie.isPresent()) {
-                return Optional.of(MovieMapper.toResponse(movie.get()));
-            }
-            return Optional.empty();
+    public ResponseEntity<MovieResponse> getMovieById(@PathVariable Long id) {
+        return movieService.findById(id)
+                .map(movie -> ResponseEntity.ok(MovieMapper.toResponse(movie)))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public MovieResponse addMovie(@RequestBody MovieRequest request) {
+    public ResponseEntity<MovieResponse> addMovie(@RequestBody MovieRequest request) {
         Movie movie = movieService.save(MovieMapper.toMovie(request));
-        return MovieMapper.toResponse(movieService.save(movie));
+        return ResponseEntity.status(HttpStatus.CREATED).body(MovieMapper.toResponse(movieService.save(movie)));
     }
 
     @PutMapping("/{id}")
-    public MovieResponse updateMovie(@RequestBody MovieRequest request, @PathVariable Long id) {
+    public ResponseEntity<MovieResponse> updateMovie(@RequestBody MovieRequest request, @PathVariable Long id) {
         Movie movie = MovieMapper.toMovie(request);
         Movie updatedMovie = movieService.update(movie, id);
-        return MovieMapper.toResponse(updatedMovie);
+        return ResponseEntity.status(HttpStatus.CREATED).body(MovieMapper.toResponse(updatedMovie));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCategory(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         movieService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }
