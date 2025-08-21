@@ -1,7 +1,7 @@
 package com.cinearchive.service;
 
 import com.cinearchive.entity.Streaming;
-import com.cinearchive.repository.StreamingRespository;
+import com.cinearchive.repository.StreamingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,26 +11,26 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class StreamingService {
-    private final StreamingRespository streamingRespository;
+    private final StreamingRepository streamingRepository;
 
     public List<Streaming> findAll() {
-        return streamingRespository.findAll();
+        return streamingRepository.findAll();
     }
 
     public Optional<Streaming> findById(Long id) {
-        return streamingRespository.findById(id);
+        return streamingRepository.findById(id);
     }
 
     public Streaming save(Streaming streaming) {
-        return streamingRespository.save(streaming);
+        return streamingRepository.save(streaming);
     }
 
     public void deleteById(Long id) {
-        streamingRespository.deleteById(id);
+        streamingRepository.deleteById(id);
     }
 
     public Streaming update(Streaming streaming, Long id) {
         streaming.setId(id);
-        return streamingRespository.save(streaming);
+        return streamingRepository.save(streaming);
     }
 }

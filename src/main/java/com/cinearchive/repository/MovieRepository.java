@@ -1,9 +1,9 @@
 package com.cinearchive.repository;
 
-import com.cinearchive.entity.Category;
+import com.cinearchive.entity.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CategoryRespository extends JpaRepository<Category, Long> {
+public interface MovieRepository extends JpaRepository<Movie, Long> {
 }

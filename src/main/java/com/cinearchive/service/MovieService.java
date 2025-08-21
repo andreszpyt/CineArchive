@@ -1,7 +1,7 @@
 package com.cinearchive.service;
 
 import com.cinearchive.entity.Movie;
-import com.cinearchive.repository.MovieRespository;
+import com.cinearchive.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,26 +11,26 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class MovieService {
-    private final MovieRespository movieRespository;
+    private final MovieRepository movieRepository;
 
     public List<Movie> findAll() {
-        return movieRespository.findAll();
+        return movieRepository.findAll();
     }
 
     public Optional<Movie> findById(Long id) {
-        return movieRespository.findById(id);
+        return movieRepository.findById(id);
     }
 
     public Movie save(Movie movie) {
-        return movieRespository.save(movie);
+        return movieRepository.save(movie);
     }
 
     public void deleteById(Long id) {
-        movieRespository.deleteById(id);
+        movieRepository.deleteById(id);
     }
 
     public Movie update(Movie movie, Long id) {
         movie.setId(id);
-        return movieRespository.save(movie);
+        return movieRepository.save(movie);
     }
 }

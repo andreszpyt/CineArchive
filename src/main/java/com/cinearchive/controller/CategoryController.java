@@ -1,6 +1,9 @@
 package com.cinearchive.controller;
 
+import com.cinearchive.controller.request.CategoryRequest;
+import com.cinearchive.controller.response.CategoryResponse;
 import com.cinearchive.entity.Category;
+import com.cinearchive.mapper.CategoryMapper;
 import com.cinearchive.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,23 +18,29 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public List<Category> getAllCategories() {
-        return categoryService.getAllCategories();
+    public List<CategoryResponse> getAllCategories() {
+        return categoryService.getAllCategories().stream()
+                .map(CategoryMapper::toCategoryResponse)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public Optional<Category> getCategoryById(@PathVariable Long id) {
-        return categoryService.getCategoryById(id);
+    public Optional<CategoryResponse> getCategoryById(@PathVariable Long id) {
+        Optional<Category> category = categoryService.getCategoryById(id);
+        if (category.isPresent()) Optional.of(CategoryMapper.toCategoryResponse(category.get()));
+        return Optional.empty();
     }
 
     @PostMapping
-    public Category addCategory(@RequestBody Category category) {
-        return categoryService.save(category);
+    public CategoryResponse addCategory(@RequestBody CategoryRequest categoryRequest) {
+        Category category = categoryService.save(CategoryMapper.toCategory(categoryRequest));
+        return CategoryMapper.toCategoryResponse(category);
     }
 
     @PutMapping("/{id}")
-    public Category updateCategory(@RequestBody Category category, @PathVariable Long id) {
-        return categoryService.PutCategory(category, id);
+    public CategoryResponse updateCategory(@RequestBody CategoryRequest categoryRequest, @PathVariable Long id) {
+        Category category = categoryService.PutCategory(CategoryMapper.toCategory(categoryRequest), id);
+        return CategoryMapper.toCategoryResponse(category);
     }
 
     @DeleteMapping("/{id}")
