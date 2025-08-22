@@ -9,12 +9,11 @@ import com.cinearchive.mapper.UserMapper;
 import com.cinearchive.repository.UserRepository;
 import com.cinearchive.service.TokenService;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.Authentication; // Importação correta
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,10 +34,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-        public ResponseEntity<String> login(@RequestBody LoginRequest request) {
+        public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
             UsernamePasswordAuthenticationToken userAndPass = new UsernamePasswordAuthenticationToken(request.email(), request.password());
             Authentication authenticate = authenticationManager.authenticate(userAndPass);
-            User user = (User) authenticate.getPrincipal
+            User user = (User) authenticate.getPrincipal();
             String token = tokenService.generateToken(user);
             return  ResponseEntity.ok(new LoginResponse(token));
         }
