@@ -17,3 +17,7 @@ spring:
 
 server:
   port: 8081
+
+cinearchive:
+  security:
+    secret: ${secret}
