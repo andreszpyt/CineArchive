@@ -1,12 +1,14 @@
-package com.cinearchive.service;
+package com.cinearchive.config;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.cinearchive.entity.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.util.Optional;
 
 
 @Component
@@ -14,6 +16,7 @@ public class TokenService {
 
     @Value("${cinearchive.security.secret}")
     public String secret;
+
     public String generateToken(User user) {
         Algorithm algorithm = Algorithm.HMAC256(secret);
         return JWT.create()
@@ -24,5 +27,22 @@ public class TokenService {
                 .withIssuedAt(Instant.now())
                 .withIssuer("API Cine Archive")
                 .sign(algorithm);
+    }
+
+    public Optional<JwtUserData> verifyToken(String token) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+
+            DecodedJWT verify = JWT.require(algorithm)
+                    .build()
+                    .verify(token);
+            return Optional.of(JwtUserData.builder()
+                    .id(verify.getClaim("UserId").asLong())
+                    .name(verify.getClaim("name").asString())
+                    .email(verify.getSubject())
+                    .build());
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
 }

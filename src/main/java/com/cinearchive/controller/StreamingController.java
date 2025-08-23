@@ -41,7 +41,7 @@ public class StreamingController {
 
     @PutMapping("/{id}")
     public ResponseEntity<StreamingResponse> updateStreaming(@RequestBody StreamingRequest request, @PathVariable Long id) {
-        Streaming streaming = streamingService.save(StreamingMapper.toStreaming(request));
+        Streaming streaming = StreamingMapper.toStreaming(request);
         return ResponseEntity.ok(StreamingMapper.toResponse(streamingService.update(streaming, id)));
     }
 
