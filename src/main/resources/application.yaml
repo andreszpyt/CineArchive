@@ -16,8 +16,14 @@ spring:
     enabled: true
 
 server:
-  port: 8082
+  port: 8080
 
 cinearchive:
   security:
     secret: ${secret}
+
+springdoc:
+  api-docs:
+    path: /api/api-docs
+  swagger-ui:
+    path: /swagger/index.html
