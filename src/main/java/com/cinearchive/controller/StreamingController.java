@@ -5,6 +5,7 @@ import com.cinearchive.controller.response.StreamingResponse;
 import com.cinearchive.entity.Streaming;
 import com.cinearchive.mapper.StreamingMapper;
 import com.cinearchive.service.StreamingService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,13 +35,13 @@ public class StreamingController {
     }
 
     @PostMapping
-    public ResponseEntity<StreamingResponse> addStreaming(@RequestBody StreamingRequest request) {
+    public ResponseEntity<StreamingResponse> addStreaming(@Valid@RequestBody StreamingRequest request) {
         Streaming streaming = streamingService.save(StreamingMapper.toStreaming(request));
         return ResponseEntity.status(HttpStatus.CREATED).body(StreamingMapper.toResponse(streaming));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StreamingResponse> updateStreaming(@RequestBody StreamingRequest request, @PathVariable Long id) {
+    public ResponseEntity<StreamingResponse> updateStreaming(@Valid @RequestBody StreamingRequest request, @PathVariable Long id) {
         Streaming streaming = StreamingMapper.toStreaming(request);
         return ResponseEntity.ok(StreamingMapper.toResponse(streamingService.update(streaming, id)));
     }

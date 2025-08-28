@@ -1,4 +1,7 @@
 package com.cinearchive.controller.request;
 
-public record LoginRequest(String email, String password) {
+import jakarta.validation.constraints.NotEmpty;
+
+public record LoginRequest(@NotEmpty(message = "email mandatory") String email,
+                           @NotEmpty(message = "Password Mandatory") String password) {
 }

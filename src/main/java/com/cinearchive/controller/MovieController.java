@@ -5,6 +5,7 @@ import com.cinearchive.controller.response.MovieResponse;
 import com.cinearchive.entity.Movie;
 import com.cinearchive.mapper.MovieMapper;
 import com.cinearchive.service.MovieService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,13 +35,13 @@ public class MovieController {
     }
 
     @PostMapping
-    public ResponseEntity<MovieResponse> addMovie(@RequestBody MovieRequest request) {
+    public ResponseEntity<MovieResponse> addMovie(@Valid @RequestBody MovieRequest request) {
         Movie movie = movieService.save(MovieMapper.toMovie(request));
         return ResponseEntity.status(HttpStatus.CREATED).body(MovieMapper.toResponse(movie));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MovieResponse> updateMovie(@RequestBody MovieRequest request, @PathVariable Long id) {
+    public ResponseEntity<MovieResponse> updateMovie(@Valid @RequestBody MovieRequest request, @PathVariable Long id) {
         Movie movie = MovieMapper.toMovie(request);
         Movie updatedMovie = movieService.update(movie, id);
         return ResponseEntity.status(HttpStatus.CREATED).body(MovieMapper.toResponse(updatedMovie));

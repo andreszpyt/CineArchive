@@ -2,6 +2,7 @@ package com.cinearchive.controller.request;
 
 import com.cinearchive.entity.Category;
 import com.cinearchive.entity.Streaming;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
 
 import java.time.LocalDate;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
-public record MovieRequest(String title,
+public record MovieRequest(@NotEmpty(message = "Title Required") String title,
                            String description,
                            LocalDate releaseDate,
                            double rating,
